@@ -6,7 +6,39 @@
 #define PORT 8080
 #define BUFFER_SIZE 4096
 
+int splitString(char* str, char* delimiter, char** result) {
+    int strLength = strlen(str);
+    int delimiterLength = strlen(delimiter);
+    int index = 0;
+    char* currentToken = "";
+    int tokenIndex = 0;
+
+    while(strcmp(currentToken, delimiter) != 0 && index < strLength) {
+        printf("Current index: %d, Current token: %s, current char: %c\n", index, currentToken, str[index]);
+        char charToTry = str[index];
+        if(charToTry == delimiter[tokenIndex]) {
+            // add to current token the charToTry
+            currentToken = strndup(str + index - tokenIndex, tokenIndex + 1);
+            tokenIndex++;
+        } else {
+            currentToken = "";
+            tokenIndex = 0;
+        }
+        index++;
+    }
+    printf("Token: %s\n", currentToken);
+    printf("Index: %d\n", index);
+    printf("char: :%c\n", str[index]);
+    return 0;
+}
+
 int main() {
+    // try splitting a string
+    char str[] = "Hello,...World";
+    char* result[10]; // Array to hold split results
+    char delimiter[] = ",...";
+    splitString(str, delimiter, result);
+
     int server_fd, client_fd;   // File descriptors for server and client sockets
     struct sockaddr_in addr;    // Structure for server address info
     socklen_t addr_len = sizeof(addr); // Size of the address structure
